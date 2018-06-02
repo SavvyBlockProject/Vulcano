@@ -38,6 +38,7 @@ TransactionView::TransactionView(QWidget *parent) :
 
     QHBoxLayout *hlayout = new QHBoxLayout();
     hlayout->setContentsMargins(0,0,0,0);
+
 #ifdef Q_OS_MAC
     hlayout->setSpacing(5);
     hlayout->addSpacing(26);
@@ -60,6 +61,7 @@ TransactionView::TransactionView(QWidget *parent) :
     dateWidget->addItem(tr("This year"), ThisYear);
     dateWidget->addItem(tr("Range..."), Range);
     hlayout->addWidget(dateWidget);
+    dateWidget->setStyleSheet("background-color: #555555; color: white;");
 
     typeWidget = new QComboBox(this);
 #ifdef Q_OS_MAC
@@ -76,10 +78,11 @@ TransactionView::TransactionView(QWidget *parent) :
     typeWidget->addItem(tr("To yourself"), TransactionFilterProxy::TYPE(TransactionRecord::SendToSelf));
     typeWidget->addItem(tr("Mined"), TransactionFilterProxy::TYPE(TransactionRecord::Generated));
     typeWidget->addItem(tr("Other"), TransactionFilterProxy::TYPE(TransactionRecord::Other));
-
+    typeWidget->setStyleSheet("background-color: #555555; color: white;");
     hlayout->addWidget(typeWidget);
 
     addressWidget = new QLineEdit(this);
+    addressWidget->setStyleSheet("background-color: #555555; color: white;");
 #if QT_VERSION >= 0x040700
     /* Do not move this to the XML file, Qt before 4.7 will choke on it */
     addressWidget->setPlaceholderText(tr("Enter address or label to search"));
@@ -97,6 +100,7 @@ TransactionView::TransactionView(QWidget *parent) :
     amountWidget->setFixedWidth(100);
 #endif
     amountWidget->setValidator(new QDoubleValidator(0, 1e20, 8, this));
+    amountWidget->setStyleSheet("background-color: #555555; color: white;");
     hlayout->addWidget(amountWidget);
 
     QVBoxLayout *vlayout = new QVBoxLayout(this);
@@ -108,6 +112,7 @@ TransactionView::TransactionView(QWidget *parent) :
     vlayout->addWidget(createDateRangeWidget());
     vlayout->addWidget(view);
     vlayout->setSpacing(0);
+
     int width = view->verticalScrollBar()->sizeHint().width();
     // Cover scroll bar width with spacing
 #ifdef Q_OS_MAC
@@ -115,13 +120,20 @@ TransactionView::TransactionView(QWidget *parent) :
 #else
     hlayout->addSpacing(width);
 #endif
+    QPalette pal = palette();
+    pal.setColor(QPalette::AlternateBase, QColor(255, 255, 255, 50));
+    pal.setColor(QPalette::Base, QColor(200, 0, 0, 125));
+    pal.setColor(QPalette::Text, QColor(255, 255, 255, 255));
+    pal.setColor(QPalette::WindowText, QColor(255, 255, 255));
+    //view->setStyleSheet(" alternate-color: white; color: white;QHeaderView {color: white; background-color: #222222;}");
     // Always show scroll bar
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     view->setTabKeyNavigation(false);
     view->setContextMenuPolicy(Qt::CustomContextMenu);
+    //view->setPalette(pal);
 
     transactionView = view;
-
+    transactionView->setStyleSheet("QTableView {color: white; background-color: rgba(0, 0, 0, 50); font-weight: bold; alternate-background-color: rgba(255, 255, 255, 50);} QHeaderView {color: black;}");
     // Actions
     QAction *copyAddressAction = new QAction(tr("Copy address"), this);
     QAction *copyLabelAction = new QAction(tr("Copy label"), this);

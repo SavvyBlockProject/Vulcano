@@ -16,6 +16,7 @@ SendCoinsEntry::SendCoinsEntry(QWidget *parent) :
     model(0)
 {
     ui->setupUi(this);
+	//ui->payToLayout->payAmount->setStyleSheet("color: black; background: transparent;");
 
 #ifdef Q_OS_MAC
     ui->payToLayout->setSpacing(4);

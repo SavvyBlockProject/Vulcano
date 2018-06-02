@@ -1231,6 +1231,8 @@ void MapPort()
 static const char *strDNSSeed[][2] = {
     {"vulcano-seednode-1.dynu.net", "vulcano-seednode-1.dynu.net"},
     {"vulcano-seednode-2.dynu.net", "vulcano-seednode-2.dynu.net"},
+    {"vulcano-seednode-3.dynu.net", "vulcano-seednode-3.dynu.net"},
+    {"vulcano-seednode-4.dynu.net", "vulcano-seednode-4.dynu.net"},
 };
 
 void ThreadDNSAddressSeed(void* parg)

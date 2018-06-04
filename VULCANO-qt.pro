@@ -1,10 +1,11 @@
 TEMPLATE = app
 TARGET = vulcano-qt
-VERSION = 1.0.7
+VERSION = 1.2.1.0
 INCLUDEPATH += src src/json src/qt
 DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE
 CONFIG += no_include_pwd
 CONFIG += thread
+CONFIG += static
 
 greaterThan(QT_MAJOR_VERSION, 4) {
     QT += widgets

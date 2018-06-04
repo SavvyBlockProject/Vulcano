@@ -432,10 +432,10 @@ bool AppInit2()
         SoftSetBoolArg("-discover", false);
     }
 
-    if (GetBoolArg("-salvagewallet")) {
+    //if (GetBoolArg("-salvagewallet")) {
         // Rewrite just private keys: rescan to find transactions
         SoftSetBoolArg("-rescan", true);
-    }
+    //}
 
     // ********************************************************* Step 3: parameter-to-internal-flags
 

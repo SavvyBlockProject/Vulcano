@@ -1100,27 +1100,18 @@ void CWallet::AvailableCoins(vector<COutput>& vCoins, bool fOnlyConfirmed, const
     }
 }
 
-void CWallet::AvailableCoinsForStaking(vector<COutput>& vCoins, unsigned int nSpendTime, int64_t& lastBlockTime) const
+void CWallet::AvailableCoinsForStaking(vector<COutput>& vCoins, unsigned int nSpendTime) const
 {
     vCoins.clear();
 
-    lastBlockTime = 0;
-
+    
     {
         LOCK2(cs_main, cs_wallet);
         for (map<uint256, CWalletTx>::const_iterator it = mapWallet.begin(); it != mapWallet.end(); ++it)
         {
             const CWalletTx* pcoin = &(*it).second;
 
-            // Find the last time we made a PoS block. This block is charaterized by a special "CoinStake"
-            // transaction type. If this transaction's output reciever is us, then it means the
-            // corresponding block was minted by us.
-            if (pcoin->IsCoinStake() && IsMine(pcoin->vout[1])) {
-                if (pcoin->nTime > lastBlockTime) {
-                    lastBlockTime = pcoin->nTime;
-                }
-            }
-
+            
             // Filtering by tx timestamp instead of block timestamp may give false positives but never false negatives
             if (pcoin->nTime + nStakeMinAge > nSpendTime)
                 continue;
@@ -1340,10 +1331,10 @@ bool CWallet::SelectCoins(int64_t nTargetValue, unsigned int nSpendTime, set<pai
 }
 
 // Select some coins without random shuffle or best subset approximation
-bool CWallet::SelectCoinsForStaking(int64_t nTargetValue, unsigned int nSpendTime, set<pair<const CWalletTx*,unsigned int> >& setCoinsRet, int64_t& nValueRet, int64_t& lastBlockTime) const
+bool CWallet::SelectCoinsForStaking(int64_t nTargetValue, unsigned int nSpendTime, set<pair<const CWalletTx*,unsigned int> >& setCoinsRet, int64_t& nValueRet) const
 {
     vector<COutput> vCoins;
-    AvailableCoinsForStaking(vCoins, nSpendTime, lastBlockTime);
+    AvailableCoinsForStaking(vCoins, nSpendTime);
 
     setCoinsRet.clear();
     nValueRet = 0;
@@ -1526,8 +1517,7 @@ bool CWallet::GetStakeWeight(const CKeyStore& keystore, uint64_t& nMinWeight, ui
     set<pair<const CWalletTx*,unsigned int> > setCoins;
     int64_t nValueIn = 0;
 
-    int64_t lastBlockTime = 0;
-    if (!SelectCoinsForStaking(nBalance - nReserveBalance, GetTime(), setCoins, nValueIn, lastBlockTime))
+    if (!SelectCoinsForStaking(nBalance - nReserveBalance, GetTime(), setCoins, nValueIn))
         return false;
 
     if (setCoins.empty())
@@ -1595,10 +1585,9 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     set<pair<const CWalletTx*,unsigned int> > setCoins;
     int64_t nValueIn = 0;
 
-    int64_t lastBlockTime = 0;
-
+    
     // Select coins with suitable depth
-    if (!SelectCoinsForStaking(nBalance - nReserveBalance, txNew.nTime, setCoins, nValueIn, lastBlockTime))
+    if (!SelectCoinsForStaking(nBalance - nReserveBalance, txNew.nTime, setCoins, nValueIn))
         return false;
 
     if (setCoins.empty())
@@ -1744,14 +1733,12 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
 
     // Calculate coin age reward
     {
-        int blockNumber = pindexPrev->nHeight + 1;
         uint64_t nCoinAge;
-        int64_t wTime;
         CTxDB txdb("r");
-        if (!txNew.GetCoinAge(txdb, nCoinAge,wTime,lastBlockTime))
+        if (!txNew.GetCoinAge(txdb, nCoinAge))
             return error("CreateCoinStake : failed to calculate coin age");
 
-        int64_t nReward = GetProofOfStakeReward(nCoinAge, nFees, (txNew.nTime - lastBlockTime) / (60*60), blockNumber);
+        int64_t nReward = GetProofOfStakeReward(nCoinAge, nFees);
         if (nReward <= 0)
             return false;
 

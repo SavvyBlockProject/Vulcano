@@ -28,7 +28,10 @@ class CNode;
 
 class CTxMemPool;
 
-static const int LAST_POW_BLOCK = 100000;
+// Changed last POW block for testnet use to generate coins and allow more time for stake age maturity
+//
+//static const int LAST_POW_BLOCK = 100000;
+static const int LAST_POW_BLOCK = 489700;
 
 /** The maximum allowed size for a serialized block, in bytes (network rule) */
 static const unsigned int MAX_BLOCK_SIZE = 1000000;

@@ -2681,8 +2681,8 @@ Esto significa que se requiere una cuota de al menos %2.</translation>
     </message>
     <message>
         <location line="+6"/>
-        <source>Listen for connections on &lt;port&gt; (default: 21041 or testnet: 31041)</source>
-        <translation>Escuchando conexiones en el puerto &lt;port&gt; (por defecto: 21041 o testnet: 31041)</translation>
+        <source>Listen for connections on &lt;port&gt; (default: 12886 or testnet: 12888)</source>
+        <translation>Escuchando conexiones en el puerto &lt;port&gt; (por defecto: 12886 o testnet: 12888)</translation>
     </message>
     <message>
         <location line="+1"/>

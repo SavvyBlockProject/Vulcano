@@ -2676,8 +2676,8 @@ Detta betyder att en avgift på minst %2 krävs.</translation>
     </message>
     <message>
         <location line="+6"/>
-        <source>Listen for connections on &lt;port&gt; (default: 21041 or testnet: 31041)</source>
-        <translation>Lyssna efter anslutningar på &lt;port&gt; (standard: 21041 eller testnät: 31041)</translation>
+        <source>Listen for connections on &lt;port&gt; (default: 12886 or testnet: 12888)</source>
+        <translation>Lyssna efter anslutningar på &lt;port&gt; (standard: 12886 eller testnät: 12888)</translation>
     </message>
     <message>
         <location line="+1"/>

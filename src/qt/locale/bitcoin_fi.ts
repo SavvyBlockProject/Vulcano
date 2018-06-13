@@ -2673,8 +2673,8 @@ Tämä tarkoittaa, että ainakin %2 rahansiirtopalkkio tarvitaan.</translation>
     </message>
     <message>
         <location line="+6"/>
-        <source>Listen for connections on &lt;port&gt; (default: 21041 or testnet: 31041)</source>
-        <translation>Kuuntele yhteyksiä portissa &lt;port&gt; (oletus: 21041 tai testiverkko: 31041)</translation>
+        <source>Listen for connections on &lt;port&gt; (default: 12886 or testnet: 12888)</source>
+        <translation>Kuuntele yhteyksiä portissa &lt;port&gt; (oletus: 12886 tai testiverkko: 12888)</translation>
     </message>
     <message>
         <location line="+1"/>

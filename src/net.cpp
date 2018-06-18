@@ -1265,6 +1265,8 @@ void ThreadDNSAddressSeed2(void* parg)
     printf("ThreadDNSAddressSeed started\n");
     int found = 0;
 
+    /* Do not use DNSSeed for Testnet
+    
     if (!fTestNet)
     {
         printf("Loading addresses from DNS seeds (could take a while)\n");
@@ -1290,7 +1292,7 @@ void ThreadDNSAddressSeed2(void* parg)
             }
         }
     }
-
+    */
     printf("%d addresses found from DNS seeds\n", found);
 }
 
